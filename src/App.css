@@ -1,3 +1,6 @@
+@import "~react-responsive-carousel/lib/styles/carousel.min.css";
+
+
 .App {
   text-align: center;
 }
@@ -35,4 +38,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.carousel .slide img{
+  width: 50%; /* Adjust to your desired percentage */
 }
