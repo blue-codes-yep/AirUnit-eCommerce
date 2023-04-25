@@ -2,6 +2,7 @@ import React from 'react';
 
 interface ProductProps {
   startIndex: number;
+  products: any[];
 }
 
 const Products: React.FC<ProductProps> = ({ startIndex }) => {

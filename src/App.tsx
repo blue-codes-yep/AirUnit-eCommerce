@@ -1,7 +1,5 @@
-// src/App.tsx
-
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
 import './App.css';
 import Products from './components/Products';
 import SignIn from './components/SignIn';
@@ -11,16 +9,29 @@ import { Carousel } from 'react-responsive-carousel';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar';
 
+const GlobalContext = React.createContext({
+  isLoading: false,
+  error: null,
+});
+
 function App() {
+  const [page, setPage] = useState("home");
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:5000/')
       .then(response => {
-        setMessage(response.data);
+        console.log(response.data);
+        setMessage(response.data)
+        setProducts(response.data.products);
+        setIsLoading(false);
       })
       .catch(error => {
-        console.log(error);
+        setError(error);
+        setIsLoading(false);
       });
   }, []);
 
@@ -41,15 +52,15 @@ function App() {
                     This is a simple homepage for testing purposes.
                   </Typography>
                   <Typography variant="h5" component="h2">
-                    {message}
+                    Message: {message}
                   </Typography>
                   <Box>
                     <Carousel>
                       <div>
-                        <Products startIndex={0} />
+                        <Products startIndex={0} products={products} />
                       </div>
                       <div>
-                        <Products startIndex={1} />
+                        <Products startIndex={1} products={products} />
                       </div>
                     </Carousel>
                   </Box>
@@ -64,5 +75,10 @@ function App() {
     </Router>
   );
 }
+
+const useGlobalContext = () => {
+  const { isLoading, error } = useContext(GlobalContext);
+  return { isLoading, error };
+};
 
 export default App;
