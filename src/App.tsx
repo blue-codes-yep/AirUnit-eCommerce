@@ -25,7 +25,7 @@ function App() {
     axios.get('http://localhost:5000/')
       .then(response => {
         console.log(response.data);
-        setMessage(response.data)
+        setMessage(response.data.message)
         setProducts(response.data.products);
         setIsLoading(false);
       })
